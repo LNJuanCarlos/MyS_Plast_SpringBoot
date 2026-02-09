@@ -1,6 +1,7 @@
 package com.mysplast.springboot.backend.model.entity;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -19,6 +20,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mysplast.springboot.backend.generator.StringPrefixedSequenceIdGenerator;
 
@@ -49,8 +51,8 @@ public class InventarioFisico implements Serializable {
 	private String ID_INVENT;
 	
 	@Column(name="FECHA", nullable=false)
-	@DateTimeFormat(pattern="YYYY-MM-dd")
-	private String FECHA;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private LocalDateTime FECHA;
 	
 	@Column(name="ESTADO", length = 1, nullable = true)
 	private String ESTADO;
@@ -104,11 +106,12 @@ public class InventarioFisico implements Serializable {
 		ID_INVENT = iD_INVENT;
 	}
 
-	public String getFECHA() {
+
+	public LocalDateTime getFECHA() {
 		return FECHA;
 	}
 
-	public void setFECHA(String fECHA) {
+	public void setFECHA(LocalDateTime fECHA) {
 		FECHA = fECHA;
 	}
 

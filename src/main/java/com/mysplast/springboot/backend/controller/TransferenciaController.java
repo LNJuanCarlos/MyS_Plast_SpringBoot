@@ -1,5 +1,6 @@
 package com.mysplast.springboot.backend.controller;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -162,7 +163,7 @@ public class TransferenciaController {
 					whtransferencia.setESTADO("A");
 					whtransferencia.setId_TIPOTRANSACCION(nuevotipotransaccion);
 					whtransferencia.setREG_USER(authentication.getName());
-					whtransferencia.setFECH_REG_USER(ZonedDateTime.now().toLocalDate().toString());
+					whtransferencia.setFECH_REG_USER(LocalDateTime.now());
 					nuevowhtransferencia = transferenciaservice.grabarTransferencia(whtransferencia);
 
 					for (int i = 0; i < whtransaccionitemActual.size(); i++) {
@@ -187,7 +188,7 @@ public class TransferenciaController {
 						nuevoKardex.setId_TRAN(whtransferencia);
 						nuevoKardex.setId_PRODUCTO(productoItem);
 						nuevoKardex.setId_SECTOR(subalmItem);
-						nuevoKardex.setFECHA(ZonedDateTime.now().toLocalDate().toString());
+						nuevoKardex.setFECHA(LocalDateTime.now());
 						nuevoKardex.setOPERACION("R");
 						nuevoKardex.setCONDICION("Origen Transferencia de Mercadería");
 						double stockactual = kardexactual.getSTOCKFECHA()-cantidad;
@@ -217,7 +218,7 @@ public class TransferenciaController {
 						nuevoKardexdest.setId_TRAN(whtransferencia);
 						nuevoKardexdest.setId_PRODUCTO(productoItem);
 						nuevoKardexdest.setId_SECTOR(subalmItemdest);
-						nuevoKardexdest.setFECHA(ZonedDateTime.now().toLocalDate().toString());
+						nuevoKardexdest.setFECHA(LocalDateTime.now());
 						nuevoKardexdest.setOPERACION("S");
 						nuevoKardexdest.setCONDICION("Destino Transferencia de Mercadería");
 						nuevoKardexdest.setCANTIDAD(cantidad);
@@ -331,7 +332,7 @@ public class TransferenciaController {
 						nuevoKardex.setId_TRAN(whtransferencia);
 						nuevoKardex.setId_PRODUCTO(productoItem);
 						nuevoKardex.setId_SECTOR(subalmItem);
-						nuevoKardex.setFECHA(ZonedDateTime.now().toLocalDate().toString());
+						nuevoKardex.setFECHA(LocalDateTime.now());
 						nuevoKardex.setOPERACION("S");
 						nuevoKardex.setCONDICION("Origen Transferencia de Mercadería");
 						double stockactual = kardexactual.getSTOCKFECHA()+cantidad;
@@ -355,7 +356,7 @@ public class TransferenciaController {
 							nuevoKardexdest.setId_TRAN(whtransferencia);
 							nuevoKardexdest.setId_PRODUCTO(productoItem);
 							nuevoKardexdest.setId_SECTOR(subalmItemdest);
-							nuevoKardexdest.setFECHA(ZonedDateTime.now().toLocalDate().toString());
+							nuevoKardexdest.setFECHA(LocalDateTime.now());
 							nuevoKardexdest.setOPERACION("R");
 							nuevoKardexdest.setCANTIDAD(cantidad);
 							nuevoKardexdest.setCONDICION("Destino Transferencia de Mercadería");

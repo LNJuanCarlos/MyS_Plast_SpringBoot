@@ -1,5 +1,6 @@
 package com.mysplast.springboot.backend.model.dao;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
@@ -17,7 +18,7 @@ public interface InventarioFisicoDao extends CrudRepository<InventarioFisico, St
 	public List<InventarioFisico> inventariosFisicosPendientes();
 	
 	@Query(value="EXEC usp_consultainventariofisicoxfecha @fecha = :fecha, @SECTOR = :sector", nativeQuery = true)
-	public List<InventarioFisico> buscarInventarioFisicoxFecha(@Param("fecha") String fecha, @Param("sector")String sector);
+	public List<InventarioFisico> buscarInventarioFisicoxFecha(@Param("fecha") LocalDateTime  fecha, @Param("sector")String sector);
 	
 	@Query(value="EXEC usp_consultainventariofisico @sector = :sector, @fecha1 = :fecha1, @fecha2 = :fecha2", nativeQuery = true)
 	public List<InventarioFisico> filtroInventarioFisico(@Param("sector") String sector, @Param("fecha1")String fecha1,@Param("fecha2")String fecha2);

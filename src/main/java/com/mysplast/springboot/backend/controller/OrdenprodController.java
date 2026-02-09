@@ -1,5 +1,6 @@
 package com.mysplast.springboot.backend.controller;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -333,13 +334,13 @@ public class OrdenprodController {
 						
 						if(nuevoegreso.getNRO_ORDEN()!="") {
 							nuevoegreso.setESTADO("I");
-							nuevoegreso.setFECHATRAN(ZonedDateTime.now().toLocalDate().toString());
+							nuevoegreso.setFECHATRAN(LocalDateTime.now());
 						} else {
 							nuevoegreso.setESTADO("A");
 						}
 						nuevoegreso.setREG_USER(authentication.getName());
 						nuevoegreso.setId_TIPOTRANSACCION(nuevotipotransaccionEgreso);
-						nuevoegreso.setFECH_REG_USER(ZonedDateTime.now().toLocalDate().toString());
+						nuevoegreso.setFECH_REG_USER(LocalDateTime.now());
 						egresoservice.grabarEgreso(nuevoegreso);
 
 						for (int i = 0; i < whtransaccionitemActualEgreso.size(); i++) {
@@ -359,7 +360,7 @@ public class OrdenprodController {
 							nuevoKardexEgreso.setId_TRAN(nuevoegreso);
 							nuevoKardexEgreso.setId_PRODUCTO(productoItemEgreso);
 							nuevoKardexEgreso.setId_SECTOR(subalmItemEgreso);
-							nuevoKardexEgreso.setFECHA(ZonedDateTime.now().toLocalDate().toString());
+							nuevoKardexEgreso.setFECHA(LocalDateTime.now());
 							nuevoKardexEgreso.setOPERACION("R");
 							nuevoKardexEgreso.setCONDICION("Salida de Mercadería");
 							nuevoKardexEgreso.setCANTIDAD(cantidadEgreso);
@@ -385,13 +386,13 @@ public class OrdenprodController {
 				
 				if(nuevoingreso.getNRO_ORDEN()!="") {
 					nuevoingreso.setESTADO("I");
-					nuevoingreso.setFECHATRAN(ZonedDateTime.now().toLocalDate().toString());
+					nuevoingreso.setFECHATRAN(LocalDateTime.now());
 				} else {
 					nuevoingreso.setESTADO("A");
 				}
 				nuevoingreso.setREG_USER(authentication.getName());
 				nuevoingreso.setId_TIPOTRANSACCION(nuevotipotransaccion);
-				nuevoingreso.setFECH_REG_USER(ZonedDateTime.now().toLocalDate().toString());
+				nuevoingreso.setFECH_REG_USER(LocalDateTime.now());
 				ingresoservice.grabarIngreso(nuevoingreso);
 				
 				for(int i=0;i<whtransaccionitemActual.size();i++) {
@@ -422,7 +423,7 @@ public class OrdenprodController {
 					nuevoKardex.setId_TRAN(nuevoingreso);
 					nuevoKardex.setId_PRODUCTO(productoItem);
 					nuevoKardex.setId_SECTOR(subalmItem);
-					nuevoKardex.setFECHA(ZonedDateTime.now().toLocalDate().toString());
+					nuevoKardex.setFECHA(LocalDateTime.now());
 					nuevoKardex.setOPERACION("S");
 					nuevoKardex.setCONDICION("Ingreso de Mercadería");
 					nuevoKardex.setCANTIDAD(cantidad);

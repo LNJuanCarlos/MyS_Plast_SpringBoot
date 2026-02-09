@@ -1,6 +1,7 @@
 package com.mysplast.springboot.backend.controller;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -41,7 +42,7 @@ import com.mysplast.springboot.backend.model.service.Tipotransaccionservice;
 @RestController
 @RequestMapping("/egreso")
 public class EgresoController {
-	
+
 	@Autowired
 	private EgresoService egresoservice;
 
@@ -160,16 +161,16 @@ public class EgresoController {
 					response.put("mensaje", "El stock del producto no puede quedar en negativo, verificar!");
 					return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CONFLICT);
 				} else {
-					
-					if(egreso.getNRO_ORDEN()!="") {
+
+					if (egreso.getNRO_ORDEN() != "") {
 						egreso.setESTADO("I");
-						egreso.setFECHATRAN(ZonedDateTime.now().toLocalDate().toString());
+						egreso.setFECHATRAN(LocalDateTime.now());
 					} else {
 						egreso.setESTADO("A");
 					}
 					egreso.setREG_USER(authentication.getName());
 					egreso.setId_TIPOTRANSACCION(nuevotipotransaccion);
-					egreso.setFECH_REG_USER(ZonedDateTime.now().toLocalDate().toString());
+					egreso.setFECH_REG_USER(LocalDateTime.now());
 					nuevoegreso = egresoservice.grabarEgreso(egreso);
 
 					for (int i = 0; i < itemtransaccionActual.size(); i++) {
@@ -189,7 +190,7 @@ public class EgresoController {
 						nuevoKardex.setId_TRAN(egreso);
 						nuevoKardex.setId_PRODUCTO(productoItem);
 						nuevoKardex.setId_SECTOR(subalmItem);
-						nuevoKardex.setFECHA(ZonedDateTime.now().toLocalDate().toString());
+						nuevoKardex.setFECHA(LocalDateTime.now());
 						nuevoKardex.setOPERACION("R");
 						nuevoKardex.setCONDICION("Salida de Mercadería");
 						nuevoKardex.setCANTIDAD(cantidad);
@@ -265,7 +266,7 @@ public class EgresoController {
 				nuevoKardex.setId_TRAN(egreso);
 				nuevoKardex.setId_PRODUCTO(productoItem);
 				nuevoKardex.setId_SECTOR(subalmItem);
-				nuevoKardex.setFECHA(ZonedDateTime.now().toLocalDate().toString());
+				nuevoKardex.setFECHA(LocalDateTime.now());
 				nuevoKardex.setOPERACION("S");
 				nuevoKardex.setCANTIDAD(cantidad);
 				nuevoKardex.setCONDICION("Anulación de Salida de Mercadería");
@@ -301,28 +302,25 @@ public class EgresoController {
 
 		Map<String, Object> response = new HashMap<>();
 
-		if (sector.equals("") && almacen.equals("") && fecha1.equals("") && fecha2.equals("")) {
+		if ((sector == null || sector.isEmpty()) && (almacen == null || almacen.isEmpty())
+				&& (fecha1 == null || fecha1.isEmpty()) && (fecha2 == null || fecha2.isEmpty())) {
 			response.put("mensaje", "Tiene que ingresar al menos un dato!");
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
 
-		if (fecha1 != "" && fecha2.equals("") || fecha1.equals("") && fecha2 != "") {
+		if ((fecha1 != null && fecha2 == null) || (fecha1 == null && fecha2 != null)) {
 			response.put("mensaje", "Si va a filtrar por fechas debe escoger un rango de fechas!");
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 		}
 
-		if (sector.equals("")) {
+		if (sector != null && sector.isEmpty())
 			sector = null;
-		}
-		if (almacen.equals("")) {
+		if (almacen != null && almacen.isEmpty())
 			almacen = null;
-		}
-		if (fecha1.equals("")) {
+		if (fecha1 != null && fecha1.isEmpty())
 			fecha1 = null;
-		}
-		if (fecha2.equals("")) {
+		if (fecha2 != null && fecha2.isEmpty())
 			fecha2 = null;
-		}
 
 		try {
 			filtroegresos = egresoservice.filtroEgreso(sector, almacen, fecha1, fecha2);

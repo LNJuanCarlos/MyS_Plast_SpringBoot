@@ -278,6 +278,21 @@ public class ReporteController {
 
 		return new ResponseEntity<List<ConsultaLotes>>(consultaLotes, HttpStatus.OK);
 	}
+	
+	@GetMapping("/stock-actual")
+	public ResponseEntity<?> obtenerStockActual(
+	        @RequestParam String sector,
+	        @RequestParam String producto) {
+
+	    Kardex kardex = kardexservice.buscarPorAlmacen(sector, producto);
+
+	    if (kardex == null) {
+	        return ResponseEntity.ok(0);
+	    }
+
+	    return ResponseEntity.ok(kardex.getSTOCKFECHA());
+	}
+
 
 
 }

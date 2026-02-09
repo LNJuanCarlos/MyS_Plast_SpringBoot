@@ -1,6 +1,7 @@
 package com.mysplast.springboot.backend.model.entity;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,8 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -31,8 +32,8 @@ public class Ingreso extends Transaccion implements Serializable {
 	private String GUIA_REF;
 	
 	@Column(name="FECHA_INGRESO", nullable=true)
-	@DateTimeFormat(pattern = "YYYY-MM-dd")
-	private String FECHA_INGRESO;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private LocalDateTime FECHA_INGRESO;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="PROVEEDOR", referencedColumnName = "ID_PERSONA")
@@ -55,11 +56,12 @@ public class Ingreso extends Transaccion implements Serializable {
 		GUIA_REF = gUIA_REF;
 	}
 
-	public String getFECHA_INGRESO() {
+
+	public LocalDateTime getFECHA_INGRESO() {
 		return FECHA_INGRESO;
 	}
 
-	public void setFECHA_INGRESO(String fECHA_INGRESO) {
+	public void setFECHA_INGRESO(LocalDateTime fECHA_INGRESO) {
 		FECHA_INGRESO = fECHA_INGRESO;
 	}
 

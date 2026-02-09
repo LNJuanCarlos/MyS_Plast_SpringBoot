@@ -1,6 +1,7 @@
 package com.mysplast.springboot.backend.model.entity;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mysplast.springboot.backend.generator.StringPrefixedSequenceIdGenerator;
 
@@ -56,8 +58,8 @@ public class Transaccion implements Serializable {
 	private String NRO_TRAN;
 	
 	@Column(name="FECHA_TRAN", nullable=false)
-	@DateTimeFormat(pattern = "YYYY-MM-dd")
-	private String FECHATRAN;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private LocalDateTime FECHATRAN;
 	
 	@Column(name="DESC_TRAN", length=15, nullable=true)
 	private String DESC_TRAN;
@@ -69,8 +71,8 @@ public class Transaccion implements Serializable {
 	private String REG_USER;
 	
 	@Column(name="FECH_REG_USER", nullable=true)
-	@DateTimeFormat(pattern = "YYYY-MM-dd")
-	private String FECH_REG_USER;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private LocalDateTime FECH_REG_USER;
 	
 	@Column(name="MOD_USER", length=25, nullable=true)
 	private String MOD_USER;
@@ -124,11 +126,13 @@ public class Transaccion implements Serializable {
 		NRO_TRAN = nRO_TRAN;
 	}
 
-	public String getFECHATRAN() {
+	
+	
+	public LocalDateTime getFECHATRAN() {
 		return FECHATRAN;
 	}
 
-	public void setFECHATRAN(String fECHATRAN) {
+	public void setFECHATRAN(LocalDateTime fECHATRAN) {
 		FECHATRAN = fECHATRAN;
 	}
 
@@ -164,11 +168,13 @@ public class Transaccion implements Serializable {
 		REG_USER = rEG_USER;
 	}
 
-	public String getFECH_REG_USER() {
+	
+
+	public LocalDateTime getFECH_REG_USER() {
 		return FECH_REG_USER;
 	}
 
-	public void setFECH_REG_USER(String fECH_REG_USER) {
+	public void setFECH_REG_USER(LocalDateTime fECH_REG_USER) {
 		FECH_REG_USER = fECH_REG_USER;
 	}
 

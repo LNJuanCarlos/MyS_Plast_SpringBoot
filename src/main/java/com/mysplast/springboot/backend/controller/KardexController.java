@@ -1,5 +1,6 @@
 package com.mysplast.springboot.backend.controller;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mysplast.springboot.backend.model.entity.Kardex;
@@ -63,23 +65,25 @@ public class KardexController {
 	@PostMapping("/kardex")
 	public ResponseEntity<?> crear(@RequestBody Kardex kardex) {
 
-		Kardex nuevakardex = null;
-		Map<String, Object> response = new HashMap<>();
-		
-		try {
-			nuevakardex = kardexservice.grabarKardex(kardex);
-			
-		} catch (DataAccessException e) {
-			response.put("mensaje", "Error al realizar el registro en la base de datos!");
-			response.put("error", e.getMessage().concat(":").concat(e.getMostSpecificCause().getMessage()));
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		
-		response.put("mensaje", "El kardex ha sido registrado con éxito!");
-		response.put("kardex", nuevakardex);
-		
-		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
-	}
+	    Kardex nuevakardex = null;
+	    Map<String, Object> response = new HashMap<>();
 
+	    try {
+	        // FECHA + HORA AUTOMÁTICA
+	        kardex.setFECHA(LocalDateTime.now());
+
+	        nuevakardex = kardexservice.grabarKardex(kardex);
+
+	    } catch (DataAccessException e) {
+	        response.put("mensaje", "Error al realizar el registro en la base de datos!");
+	        response.put("error", e.getMessage().concat(":").concat(e.getMostSpecificCause().getMessage()));
+	        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+
+	    response.put("mensaje", "El kardex ha sido registrado con éxito!");
+	    response.put("kardex", nuevakardex);
+
+	    return new ResponseEntity<>(response, HttpStatus.OK);
+	}
 
 }

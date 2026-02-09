@@ -1,5 +1,6 @@
 package com.mysplast.springboot.backend.controller;
 
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -101,10 +104,12 @@ public class UnmedidaController {
 	public ResponseEntity<?> crearUnmedida(@RequestBody Unmedida unmedida){
 	
 		Unmedida nuevaunmedida = null;
-		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Map<String, Object> response = new HashMap<>();
 		
 		try {
+			unmedida.setREG_USER(authentication.getName());
+			unmedida.setFECH_REG_USER(ZonedDateTime.now().toLocalDate().toString());
 			nuevaunmedida =	unmedidaservice.grabarUnmedida(unmedida);
 		} catch (DataAccessException e) {
 			// TODO: handle exception

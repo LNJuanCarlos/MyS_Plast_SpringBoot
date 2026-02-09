@@ -1,6 +1,7 @@
 package com.mysplast.springboot.backend.model.entity;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -37,8 +38,8 @@ public class Kardex implements Serializable {
 	private String OPERACION;
 	
 	@Column(name="FECHA")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private String FECHA;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private LocalDateTime FECHA;
 	
 	@Column(name="CANTIDAD")
 	private double CANTIDAD;
@@ -86,12 +87,12 @@ public class Kardex implements Serializable {
 		OPERACION = oPERACION;
 	}
 
-	public String getFECHA() {
-		return FECHA;
+	public LocalDateTime getFECHA() {
+	    return FECHA;
 	}
 
-	public void setFECHA(String fECHA) {
-		FECHA = fECHA;
+	public void setFECHA(LocalDateTime fECHA) {
+	    FECHA = fECHA;
 	}
 
 	public double getCANTIDAD() {

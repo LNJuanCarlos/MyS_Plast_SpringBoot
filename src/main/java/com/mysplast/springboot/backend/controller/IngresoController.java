@@ -1,6 +1,7 @@
 package com.mysplast.springboot.backend.controller;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -155,13 +156,14 @@ public class IngresoController {
 		try {
 			if(ingreso.getNRO_ORDEN()!="") {
 				ingreso.setESTADO("I");
-				ingreso.setFECHATRAN(ZonedDateTime.now().toLocalDate().toString());
+				ingreso.setFECHATRAN(LocalDateTime.now()); // cambio
+				
 			} else {
 				ingreso.setESTADO("A");
 			}
 			ingreso.setREG_USER(authentication.getName());
 			ingreso.setId_TIPOTRANSACCION(nuevotipotransaccion);
-			ingreso.setFECH_REG_USER(ZonedDateTime.now().toLocalDate().toString());
+			ingreso.setFECH_REG_USER(LocalDateTime.now());
 			nuevoingreso = ingresoservice.grabarIngreso(ingreso);
 			
 			for(int i=0;i<whtransaccionitemActual.size();i++) {
@@ -192,7 +194,7 @@ public class IngresoController {
 				nuevoKardex.setId_TRAN(ingreso);
 				nuevoKardex.setId_PRODUCTO(productoItem);
 				nuevoKardex.setId_SECTOR(subalmItem);
-				nuevoKardex.setFECHA(ZonedDateTime.now().toLocalDate().toString());
+				nuevoKardex.setFECHA(LocalDateTime.now());
 				nuevoKardex.setOPERACION("S");
 				nuevoKardex.setCONDICION("Ingreso de Mercadería");
 				nuevoKardex.setCANTIDAD(cantidad);
@@ -293,7 +295,7 @@ public class IngresoController {
 				nuevoKardex.setId_TRAN(ingreso);
 				nuevoKardex.setId_PRODUCTO(productoItem);
 				nuevoKardex.setId_SECTOR(subalmItem);
-				nuevoKardex.setFECHA(ZonedDateTime.now().toLocalDate().toString());
+				nuevoKardex.setFECHA(LocalDateTime.now());
 				nuevoKardex.setOPERACION("R");
 				nuevoKardex.setCONDICION("Anulación de Ingreso de Mercadería");
 				double stockactual = kardexactual.getSTOCKFECHA()-cantidad;

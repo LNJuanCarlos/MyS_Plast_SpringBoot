@@ -120,7 +120,7 @@ public class NaturalController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		response.put("mensaje", "Se ha creado correctamente la Persona Jurídica!");
+		response.put("mensaje", "Se ha creado correctamente la Persona Natural!");
 		response.put("natural", nuevanatural);
 		return new ResponseEntity<Map<String, Object> >(response, HttpStatus.OK);
 		
@@ -138,7 +138,7 @@ public class NaturalController {
 		
 
 		if(naturalActual == null) {
-			response.put("mensaje", "La persona jurídica con el ID: ".concat(natural.getID_PERSONA().toString().concat("no existe!")));
+			response.put("mensaje", "La persona Natural con el ID: ".concat(natural.getID_PERSONA().toString().concat("no existe!")));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
 		

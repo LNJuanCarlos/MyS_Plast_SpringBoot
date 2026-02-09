@@ -180,6 +180,7 @@ public class ProductoController {
 			productoActual.setESTADO(producto.getESTADO());
 			productoActual.setMOD_USER(authentication.getName());
 			productoActual.setFECH_MOD_USER(ZonedDateTime.now().toLocalDate().toString());
+			productoActual.setCODEXTERNO(producto.getCODEXTERNO());
 			productoActualizada = productoservice.grabarProducto(productoActual);
 		} catch (DataAccessException e) {
 			// TODO: handle exception

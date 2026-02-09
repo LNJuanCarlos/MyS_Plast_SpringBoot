@@ -1,5 +1,6 @@
 package com.mysplast.springboot.backend.model.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class InventarioFisicoService {
 		return inventariofisicorepo.findById(id).get();
 	}
 	
-	public List<InventarioFisico> buscarInventarioFisicoxFecha (String fecha, String sector) {
+	public List<InventarioFisico> buscarInventarioFisicoxFecha (LocalDateTime  fecha, String sector) {
 		return inventariofisicorepo.buscarInventarioFisicoxFecha(fecha, sector);
 	}
 	
