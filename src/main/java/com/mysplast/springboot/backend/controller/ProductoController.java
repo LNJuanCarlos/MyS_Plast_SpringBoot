@@ -140,6 +140,14 @@ public class ProductoController {
 			producto.setFECH_REG_USER(ZonedDateTime.now().toLocalDate().toString());
 			nuevaproducto =	productoservice.grabarProducto(producto);
 		} catch (DataAccessException e) {
+			
+			 String error = e.getMostSpecificCause().getMessage();
+
+		        // Detectar duplicado de CODEXTERNO
+		        if (error != null && error.contains("CODEXTERNO")) {
+		            response.put("mensaje", "El código externo ya existe. No puede repetirse.");
+		            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		        }
 			// TODO: handle exception
 			response.put("mensaje", "Error al realizar la consulta en la base de datos!");
 			response.put("error",e.getMessage().concat(":").concat(e.getMostSpecificCause().getMessage()));
@@ -183,6 +191,15 @@ public class ProductoController {
 			productoActual.setCODEXTERNO(producto.getCODEXTERNO());
 			productoActualizada = productoservice.grabarProducto(productoActual);
 		} catch (DataAccessException e) {
+			
+			 String error = e.getMostSpecificCause().getMessage();
+
+		        // Detectar duplicado de CODEXTERNO
+		        if (error != null && error.contains("CODEXTERNO")) {
+		            response.put("mensaje", "El código externo ya existe. No puede repetirse.");
+		            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		        }
+		        
 			// TODO: handle exception
 			response.put("mensaje", "Error al realizar la consulta en la base de datos!");
 			response.put("error",e.getMessage().concat(":").concat(e.getMostSpecificCause().getMessage()));

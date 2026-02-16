@@ -132,23 +132,37 @@ public class EgresoController {
 		Map<String, Object> response = new HashMap<>();
 		Tipotransaccion nuevotipotransaccion = tipotransaccionservice.buscarTipotransaccionId(Long.parseLong("2"));
 
-		for (int i = 0; i < itemtransaccionActual.size(); i++) {
+		for (Itemtransaccion item : itemtransaccionActual) {
 
-			String sector = egreso.getId_SECTOR().getID_SECTOR();
-			String producto = itemtransaccionActual.get(i).getId_PRODUCTO().getID_PRODUCTO();
-			Stock productostockactual = productostockservice.buscarPorAlmacen(sector, producto);
+		    String sector = egreso.getId_SECTOR().getID_SECTOR();
+		    String producto = item.getId_PRODUCTO().getID_PRODUCTO();
 
-			if (productostockactual.equals(null)) {
-				StockNulo = true;
-				break;
-			} else {
-				double cantidad = itemtransaccionActual.get(i).getCANTIDAD();
-				double cantidadactualizada = productostockactual.getCANTIDAD() - cantidad;
-				if (cantidadactualizada < 0) {
-					StockNegativo = true;
-					break;
-				}
-			}
+		    Stock stockActual = productostockservice.buscarPorAlmacen(sector, producto);
+
+		    // No existe stock
+		    if (stockActual == null) {
+
+		        response.put("mensaje",
+		                "No existe stock para el producto: " +
+		                item.getId_PRODUCTO().getNOMBRE());
+
+		        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+		    }
+
+		    double cantidadSolicitada = item.getCANTIDAD();
+		    double stockDisponible = stockActual.getCANTIDAD();
+
+		    // Stock insuficiente
+		    if (cantidadSolicitada > stockDisponible) {
+
+		        response.put("mensaje",
+		                "Stock insuficiente para el producto: " +
+		                item.getId_PRODUCTO().getNOMBRE() +
+		                ". Disponible: " + stockDisponible +
+		                ", solicitado: " + cantidadSolicitada);
+
+		        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+		    }
 		}
 
 		try {
@@ -319,9 +333,14 @@ public class EgresoController {
 			almacen = null;
 		if (fecha1 != null && fecha1.isEmpty())
 			fecha1 = null;
-		if (fecha2 != null && fecha2.isEmpty())
+		if (fecha2 != null && fecha2.isEmpty()) {
 			fecha2 = null;
 
+		}else {
+			fecha2 = fecha2 + " 23:59:59";
+		}
+		
+		
 		try {
 			filtroegresos = egresoservice.filtroEgreso(sector, almacen, fecha1, fecha2);
 		} catch (DataAccessException e) {

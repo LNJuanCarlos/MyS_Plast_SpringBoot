@@ -128,24 +128,59 @@ public class TransferenciaController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Map<String, Object> response = new HashMap<>();
 		Tipotransaccion nuevotipotransaccion = tipotransaccionservice.buscarTipotransaccionId(Long.parseLong("3"));
+		
+		if (whtransferencia.getId_SECTOR()
+		        .getID_SECTOR()
+		        .equals(whtransferencia.getId_SECTORDEST().getID_SECTOR())) {
 
-		for (int i = 0; i < whtransaccionitemActual.size(); i++) {
+		    response.put("mensaje", "El almacén origen y destino no pueden ser el mismo.");
+		    return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+		}
 
-			String subalmacen = whtransferencia.getId_SECTOR().getID_SECTOR();
-			String producto = whtransaccionitemActual.get(i).getId_PRODUCTO().getID_PRODUCTO();
-			Stock productostockactual = productostockservice.buscarPorAlmacen(subalmacen, producto);
+		for (Itemtransaccion item : whtransaccionitemActual) {
 
-			if (productostockactual.equals(null)) {
-				StockNulo = true;
-				break;
-			} else {
-				double cantidad = whtransaccionitemActual.get(i).getCANTIDAD();
-				double cantidadactualizada = productostockactual.getCANTIDAD() - cantidad;
-				if (cantidadactualizada < 0) {
-					StockNegativo = true;
-					break;
-				}
-			}
+		    String subalmacen = whtransferencia.getId_SECTOR().getID_SECTOR();
+		    String producto = item.getId_PRODUCTO().getID_PRODUCTO();
+
+		    Stock stockOrigen = productostockservice.buscarPorAlmacen(subalmacen, producto);
+
+		    // No existe stock en origen
+		    if (stockOrigen == null) {
+		        StockNulo = true;
+		        break;
+		    }
+		    
+		    double cantidadSolicitada = item.getCANTIDAD();
+		    double stockDisponible = stockOrigen.getCANTIDAD();
+
+		    // Stock insuficiente
+		    if (cantidadSolicitada > stockDisponible) {
+
+		        response.put("mensaje",
+		                "Stock insuficiente para el producto: " +
+		                item.getId_PRODUCTO().getNOMBRE() +
+		                ". Disponible: " + stockDisponible +
+		                ", solicitado: " + cantidadSolicitada);
+
+		        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+		    }
+
+		    double cantidad = item.getCANTIDAD();
+
+		    // Cantidad inválida
+		    if (cantidad <= 0) {
+		        response.put("mensaje", "Cantidad inválida para el producto: " + producto);
+		        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+		    }
+
+		    // Quedaría negativo
+		    if (stockOrigen.getCANTIDAD() < cantidad) {
+		        StockNegativo = true;
+		        break;
+		    }
+		    
+		    
+		    
 		}
 
 		try {
@@ -428,6 +463,8 @@ public class TransferenciaController {
 		}
 		if (fecha2.equals("")) {
 			fecha2 = null;
+		}else {
+			fecha2 = fecha2 + " 23:59:59";
 		}
 		
 		try {

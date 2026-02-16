@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.mysplast.springboot.backend.model.entity.ItemOrdencompra;
 
-public interface ItemordencompraDao extends CrudRepository<ItemOrdencompra, Long> {
+public interface ItemordencompraDao extends CrudRepository<ItemOrdencompra, String> {
 
 }

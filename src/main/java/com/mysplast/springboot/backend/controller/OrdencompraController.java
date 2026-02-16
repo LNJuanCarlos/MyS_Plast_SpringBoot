@@ -340,6 +340,8 @@ public class OrdencompraController {
 		}
 		if (fecha2.equals("")) {
 			fecha2 = null;
+		}else {
+			fecha2 = fecha2 + " 23:59:59";
 		}
 
 		try {

@@ -285,9 +285,15 @@ public class InventarioFisicoController {
 
 		Map<String, Object> response = new HashMap<>();
 
-		if (sector.equals("")  || fecha1.equals("") || fecha2.equals("")) {
-			response.put("mensaje", "Todos los campos para filtrar son obligatorios!");
+		if ((sector == null || sector.isEmpty()) 
+				&& (fecha1 == null || fecha1.isEmpty()) && (fecha2 == null || fecha2.isEmpty())) {
+			response.put("mensaje", "Tiene que ingresar al menos un dato!");
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+
+		if ((fecha1 != null && fecha2 == null) || (fecha1 == null && fecha2 != null)) {
+			response.put("mensaje", "Si va a filtrar por fechas debe escoger un rango de fechas!");
+			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 		}
 
 		
@@ -299,6 +305,8 @@ public class InventarioFisicoController {
 		}
 		if (fecha2.equals("")) {
 			fecha2 = null;
+		}else {
+			fecha2 = fecha2 + " 23:59:59";
 		}
 
 		try {
